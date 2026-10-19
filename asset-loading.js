@@ -1,12 +1,12 @@
 Art.load = async function (onProgress = () => {}) {
   const entries = [
-    ['right', 'sprites/player/player-right.webp', 'sprites/player/player-right.png'],
-    ['vertical', 'sprites/player/player-vertical.webp', 'sprites/player/player-vertical.png'],
-    ['idle', 'sprites/player/player-idle.webp', 'sprites/player/player-idle.png'],
-    ['hair', 'sprites/hair/hair-fixed.webp', 'sprites/hair/hair-fixed.png'],
-    ['heads', 'base/head-base.png'],
+    ['right', 'assets/sprites/player/player-right.webp', 'assets/sprites/player/player-right.png'],
+    ['vertical', 'assets/sprites/player/player-vertical.webp', 'assets/sprites/player/player-vertical.png'],
+    ['idle', 'assets/sprites/player/player-idle.webp', 'assets/sprites/player/player-idle.png'],
+    ['hair', 'assets/sprites/hair/hair-fixed.webp', 'assets/sprites/hair/hair-fixed.png'],
+    ['heads', 'assets/base/head-base.png'],
     ...['recepcao', 'rh', 'financeiro', 'comercial', 'soc', 'intel', 'infra', 'grc', 'appsec', 'red', 'cloud', 'direcao', 'mentor']
-      .map(id => [`npc-${id}`, `sprites/npc/${id}.png`])
+      .map(id => [`npc-${id}`, `assets/sprites/npc/${id}.png`])
   ];
   this.total = entries.length + MAPS.length;
   this.loaded = 0;
@@ -34,10 +34,10 @@ Art.loadMap = function (floor) {
   if (this.images[map.asset]) return Promise.resolve(this.images[map.asset]);
   this.mapPromises ??= new Map();
   if (!this.mapPromises.has(map.asset)) {
-    const promise = loadImage(`mapas/${map.asset}.webp`)
+    const promise = loadImage(`assets/mapas/${map.asset}.webp`)
       .catch(error => {
         console.warn(`WebP indisponível para ${map.asset}; usando o PNG de fallback.`, error);
-        return loadImage(`mapas/${map.asset}.png`);
+        return loadImage(`assets/mapas/${map.asset}.png`);
       })
       .then(image => {
         this.images[map.asset] = image;

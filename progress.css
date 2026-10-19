@@ -1,4 +1,4 @@
-@supports (background-image: image-set(url("mapas/fachada.webp") type("image/webp"), url("mapas/fachada.png") type("image/png"))) {
+@supports (background-image: image-set(url("assets/mapas/fachada.webp") type("image/webp"), url("assets/mapas/fachada.png") type("image/png"))) {
   .cover {
     background-image:
       linear-gradient(180deg, #06132366, transparent 27%, transparent 57%, #061323 100%),

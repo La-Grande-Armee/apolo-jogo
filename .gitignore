@@ -1,0 +1,29 @@
+# Segredos e configuração local
+.env
+.env.local
+*.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependências
+node_modules/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Build / output temporário
+dist/
+build/
+.tmp/

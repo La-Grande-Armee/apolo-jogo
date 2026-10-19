@@ -5,6 +5,14 @@
   let peerReady = false;
   let connectionTimer = null;
   let disconnectTimer = null;
+  let joiningTimer = null;
+  let networkTimer = null;
+  let host = null;
+  let connections = new Map();
+  let others = new Map();
+  let remoteVisuals = new Map();
+  let peer = null;
+  let isHost = false;
 
   function clearNetworkTimers() {
     clearTimeout(joiningTimer);
@@ -71,10 +79,9 @@
         connection.close();
         return;
       }
-      if (!ApoloProtocol.validWorldPacket(data, validPlayer)) return;
+      if (!data || data.type !== 'world' || !Array.isArray(data.players) || data.players.length > 40) return;
       others.clear();
-      data.players.slice(0, 40).filter(player => player.id !== me.id)
-        .forEach(player => others.set(player.id, player));
+      data.players.slice(0, 40).filter(player => player && player.id !== me.id && typeof player.id === 'string' && typeof player.name === 'string' && player.name.length > 0 && player.name.length <= 20 && Number.isFinite(player.x) && player.x >= 0 && player.x <= W && Number.isFinite(player.y) && player.y >= 0 && player.y <= H && Number.isInteger(player.floor) && player.floor >= 0 && player.floor < MAPS.length && skins.includes(player.skin) && hairs.includes(player.hair) && Number.isInteger(player.style) && player.style >= 0 && player.style < 8 && Number.isInteger(player.outfit) && player.outfit >= 0 && player.outfit < 6 && ['none','glasses','backpack','headphones','glasses-backpack'].includes(player.accessory) && [0,1,2,3].includes(player.dir) && typeof player.moving === 'boolean').forEach(player => others.set(player.id, player));
       for (const id of remoteVisuals.keys()) if (!others.has(id)) remoteVisuals.delete(id);
       status('● Conectado à turma');
     });
@@ -204,6 +211,7 @@
           const participant = { ...data.player, id: connection.peer };
           others.set(connection.peer, participant);
           status('● Sala ativa · apresentador');
+          sendState();
         });
         const removeParticipant = () => {
           if (connections.get(connection.peer) !== connection) return;
